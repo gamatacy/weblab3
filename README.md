@@ -1,7 +1,7 @@
 # Web Programming laboratory work 3
 ## Ваня Воронин P32312
 
-![task](readme/task.jpg)
+![task](src/main/webapp/readme/task.jpg)
 
 ### Разработать приложение на базе JavaServer Faces Framework, которое осуществляет проверку попадания точки в заданную область на координатной плоскости.
 
