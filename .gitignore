@@ -1,0 +1,7 @@
+.idea
+.gradle
+gradle
+build/classes
+build/kotlin
+build/tmp
+build/resources
