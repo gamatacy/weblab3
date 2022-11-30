@@ -24,6 +24,7 @@ body {
     display: grid;
     margin: auto;
     padding: 15px;
+    max-width: 350px;
     background-color: whitesmoke;
     border-radius: 20px;
     text-align: center;
@@ -109,11 +110,46 @@ h2 {
     font-size: 36px;
     font-weight: bold;
 }
+.y-button {
+    position: relative;
+    left: 8%;
+    margin-left: 5px;
+    border-radius: 15px;
+    background-color: #1f1f1f;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    color: whitesmoke;
+    transition: 0.25s;
+}
+
+.y-button:hover {
+    font-size: 30px;
+    transition-duration: 0.2s;
+
+}
+
+.y-button:active {
+    font-size: 30px;
+    color: black;
+    background-color: whitesmoke;
+}
+
+.y-button-activated {
+    position: relative;
+    left: 8%;
+    border-radius: 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    color: black;
+    background-color: whitesmoke;
+}
 
 .r-button {
     position: relative;
     left: 8%;
+    margin-left: 5px;
     border-radius: 15px;
+    padding: 10px;
     background-color: #1f1f1f;
     font-family: 'Montserrat', sans-serif;
     font-size: 24px;
@@ -143,7 +179,7 @@ h2 {
     background-color: whitesmoke;
 }
 
-.y-text-area {
+.x-text-area {
     background: #1f1f1f;
     color: whitesmoke;
     font-family: 'Montserrat', sans-serif;
@@ -155,7 +191,7 @@ h2 {
     transition: 1s;
 }
 
-.y-text-area:hover {
+.x-text-area:hover {
     width: 300px;
     transition: 1s;
 }

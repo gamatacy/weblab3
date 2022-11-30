@@ -4,8 +4,124 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="Hello, world"/>
-</f:view>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lab 3 Main</title>
+    <link rel="icon" href="img/punisher.ico"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&#38;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles/style.css"/>
+    <script src="js/jquery-3.6.1.js" type="module"/>
+    <script src="js/main.js" type="module"></script>
+    <script src="js/canvas.js" type="module"></script>
+    <script type="text/javascript">
+        function changeValueY(value) {
+            $(".y-value").val(value);
+            $(":button").each(function () {
+                if ($(this).val() == $(".y-value").val()) {
+                    $(this).removeClass();
+                    $(this).toggleClass("y-button-activated");
+                } else {
+                    $(this).removeClass("y-button-activated");
+                    $(this).addClass("y-button");
+                }
+            })
+        }
+        function changeValueR(value) {
+            $(".r-value").val(value);
+        }
+    </script>
+    <script type="text/javascript">
+        function drawHit(x, y, ctx) {
+            ctx.beginPath()
+            ctx.arc(x, y, 3, 0, Math.PI * 2)
+            ctx.fill()
+        }
+
+        function loadData(x, y, r) {
+            let canvas = document.getElementById("graph")
+            let ctx = canvas.getContext("2d")
+            ctx.beginPath()
+            drawHit(x * (154 / r) + 330, Math.abs(y * (154 / r) - 340), ctx)
+            ctx.fill()
+        }
+    </script>
+</head>
+<h:head/>
+<h:body>
+    <div id="back-button">
+        <h:form>
+            <h:commandLink action="toIndex" value="back"/>
+        </h:form>
+    </div>
+    <table id="main-table">
+        <tr>
+            <td class="input-cell">
+              <h:form style="height: 100%">
+                  <table id="coord-table">
+                      <tr>
+                          <td class="coord-name">X</td>
+                          <td>
+                              <input type="text" name="x" class="x-text-area"/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="coord-name">Y</td>
+                          <td>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="-5" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="-4" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="-3" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="-2" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="-1" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="0" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="1" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="2" type="button"/>
+                              <h:commandButton class="y-button" onclick="changeValueY(this.value)" value="3" type="button"/>
+                              <input type="hidden" name="y" class="y-value" value=""/>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td class="coord-name">
+                              R
+                          </td>
+                          <td>
+                              <p:commandLink value="1" type="button" onclick="changeValueR(1)" class="r-button"/>
+                              <p:commandLink value="1.5" type="button" onclick="changeValueR(1.5)" class="r-button"/>
+                              <p:commandLink value="2" type="button" onclick="changeValueR(2)" class="r-button"/>
+                              <p:commandLink value="2.5" type="button" onclick="changeValueR(2.5)" class="r-button"/>
+                              <p:commandLink value="3" type="button" onclick="changeValueR(3)" class="r-button"/>
+                              <input type="hidden"  name="r" class="r-value" value=""/>
+                          </td>
+                      </tr>
+                  </table>
+                  <h:commandButton class="check-button" value="check">
+                      <f:ajax execute="@form" listener="#{coordinates.applyHit()}"/>
+                  </h:commandButton>
+              </h:form>
+            </td>
+            <td class="coord-area-cell" colspan="2">
+                <div>
+                    <canvas id="graph" height="676" width="674"></canvas>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table id="results-table">
+                    <tr class="result-row">
+                        <th class="result-cell">result</th>
+                        <th class="result-cell">X</th>
+                        <th class="result-cell">Y</th>
+                        <th class="result-cell">R</th>
+                        <th class="result-cell">time</th>
+                        <th class="result-cell">execution time</th>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</h:body>
 </html>
