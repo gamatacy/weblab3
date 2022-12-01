@@ -4,66 +4,30 @@ $(document).ready(function () {
     let canvas = document.getElementById("graph")
     let ctx = canvas.getContext("2d")
 
-    loadData()
-
-    $("#graph").mousemove(function (event) {
-        let r = $("#r-value").val();
-
-        if (r != "") {
-            $(".check-button").html((`X: ${getCoordinate(event.offsetX, "r", r).toString().substring(0,4)} Y: ${getCoordinate(event.offsetY, "y", r).toString().substring(0,4)}`))
-        }
-    })
-
-    $("#graph").mouseout(function(){
-        $(".check-button").html("check")
-    })
-
-    $("#graph").click(function (event) {
-        let r = $("#r-value").val();
-
-        if (r == "") {
-            main.changeCheckButtonText("Select R")
-            return false
-        }
-
-        sendRequest(
-            getCoordinate(event.offsetX, "r", r),
-            getCoordinate(event.offsetY, "y", r),
-            r
-        )
-
-        drawHit(event.offsetX, event.offsetY, ctx)
-
-    })
-
-
-
-    function sendRequest(x, y, r) {
-        let time = new Date()
-        $.get({
-            url: "./request",
-            data: {
-                x: x,
-                y: y,
-                r: r,
-                time: time
-            },
-        }).done(function (data) {
-            window.location.pathname = data
-        })
-
-    }
-
-    //cringe, but works 
-    function getCoordinate(coordinate, coordinate_name, r) {
-        let segment = 154 / r
-        if (coordinate_name == "r") {
-            return (coordinate - 330) / segment
-        } else {
-            return (340 - coordinate) / segment
-        }
-
-    }
+    // $("#graph").mousemove(function (event) {
+    //     let r = $("#r-value").val();
+    //
+    //     if (r != "") {
+    //         $(".check-button").html((`X: ${getCoordinate(event.offsetX, "r", r).toString().substring(0,4)} Y: ${getCoordinate(event.offsetY, "y", r).toString().substring(0,4)}`))
+    //     }
+    // })
+    //
+    // $("#graph").mouseout(function(){
+    //     $(".check-button").html("check")
+    // })
+    //
+    //
+    // $("#graph").click(function (event) {
+    //     let r = $("#r-value").val();
+    //
+    //     if (r == "") {
+    //         main.changeCheckButtonText("Select R")
+    //         return false
+    //     }
+    //
+    //     drawHit(event.offsetX, event.offsetY, ctx)
+    //
+    // })
 
 })
 

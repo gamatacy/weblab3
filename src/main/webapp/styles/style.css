@@ -31,11 +31,13 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: #1f1f1f;
     font-size: 48px;
+    text-decoration: none !important;
 }
 
 .main-page-link-button:hover{
     font-size: 52px;
     transition: 0.2s;
+    background-color: #1f1f1f;
 }
 
 #results-table{
@@ -117,13 +119,13 @@ h2 {
     border-radius: 15px;
     background-color: #1f1f1f;
     font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
+    font-size: 24px !important;
     color: whitesmoke;
     transition: 0.25s;
 }
 
 .y-button:hover {
-    font-size: 30px;
+    font-size: 30px !important;
     transition-duration: 0.2s;
 
 }
@@ -136,7 +138,7 @@ h2 {
 
 .y-button-activated {
     position: relative;
-    left: 8%;
+    left: 8.5%;
     border-radius: 15px;
     font-family: 'Montserrat', sans-serif;
     font-size: 30px;
@@ -148,35 +150,39 @@ h2 {
     position: relative;
     left: 8%;
     margin-left: 5px;
+    padding: 3px 15px;
     border-radius: 15px;
-    padding: 10px;
     background-color: #1f1f1f;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    color: whitesmoke;
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 24px !important;
+    color: whitesmoke !important;
+    text-decoration: none !important;
     transition: 0.25s;
 }
 
 .r-button:hover {
-    font-size: 30px;
-    transition-duration: 0.2s;
-
+    font-size: 30px!important;
+    transition-duration: 0.25s;
 }
 
 .r-button:active {
-    font-size: 30px;
-    color: black;
+    font-size: 30px !important;
+    color: black !important;
     background-color: whitesmoke;
 }
 
 .r-button-activated {
     position: relative;
-    left: 8%;
+    left: 8.5%;
+    padding: 3px 15px;
     border-radius: 15px;
+    border: #1f1f1f;
     font-family: 'Montserrat', sans-serif;
     font-size: 30px;
     color: black;
     background-color: whitesmoke;
+    border: solid 2px;
+    text-decoration: none !important;
 }
 
 .x-text-area {
@@ -210,6 +216,7 @@ h2 {
 .check-button {
     position: relative;
     left: 50%;
+    margin-top: 30px;
     transform: translateX(-50%);
     border-radius: 15px;
     background-color: #1f1f1f;
@@ -311,6 +318,7 @@ h2 {
     font-weight: bold;
     font-size: 36px;
     border-width: 0px;
+    text-decoration: none !important;
 }
 
 #back-button:hover{
@@ -325,4 +333,28 @@ h2 {
     margin-bottom: auto;
     margin-left: auto;
     z-index: -1;
+}
+
+.bbutton{
+    color: whitesmoke;
+}
+
+.bbutton:hover{
+    color: #1f1f1f;
+}
+
+.mbutton{
+    color: #1f1f1f;
+}
+
+.mbutton:hover{
+    color: whitesmoke;
+}
+
+.info-text-area{
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    color: #1f1f1f;
 }

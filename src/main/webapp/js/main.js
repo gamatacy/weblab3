@@ -72,11 +72,9 @@ $(document).ready(function () {
 
 //Swap text in "check" button for a bit if coordinates aren't valid
 function changeCheckButtonText(message) {
-    $(".check-button").html(message)
-    $(".check-button").toggleClass("check-button-active")
+    $(".info-text-area").html(message)
     setTimeout(() => {
-            $(".check-button").html("check")
-            $(".check-button").removeClass("check-button-active")
+            $(".info-text-area").html("")
         },
         500)
 }

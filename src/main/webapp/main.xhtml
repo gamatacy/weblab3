@@ -32,29 +32,34 @@
         }
         function changeValueR(value) {
             $(".r-value").val(value);
+            $("a[href^='#']").each(function () {
+               if($(this).attr('class') != "bbutton"){
+                   if ($(this).text() == value){
+                       $(this).removeClass();
+                       $(this).toggleClass("r-button-activated");
+                   } else{
+                       $(this).removeClass();
+                       $(this).toggleClass("r-button");
+                   }
+               }
+            })
         }
     </script>
     <script type="text/javascript">
+
         function drawHit(x, y, ctx) {
             ctx.beginPath()
             ctx.arc(x, y, 3, 0, Math.PI * 2)
             ctx.fill()
         }
 
-        function loadData(x, y, r) {
-            let canvas = document.getElementById("graph")
-            let ctx = canvas.getContext("2d")
-            ctx.beginPath()
-            drawHit(x * (154 / r) + 330, Math.abs(y * (154 / r) - 340), ctx)
-            ctx.fill()
-        }
     </script>
 </head>
 <h:head/>
 <h:body>
     <div id="back-button">
         <h:form>
-            <h:commandLink action="toIndex" value="back"/>
+            <h:commandLink styleClass="bbutton" action="toIndex" value="back" style="text-decoration: none !important;"/>
         </h:form>
     </div>
     <table id="main-table">
@@ -100,11 +105,35 @@
                   <h:commandButton class="check-button" value="check">
                       <f:ajax execute="@form" listener="#{coordinates.applyHit()}"/>
                   </h:commandButton>
+                  <div>
+                      <h3 class="info-text-area">
+
+                      </h3>
+                  </div>
               </h:form>
             </td>
             <td class="coord-area-cell" colspan="2">
                 <div>
-                    <canvas id="graph" height="676" width="674"></canvas>
+                    <p:remoteCommand name="rc" action="#{canvasBean.applyHit()}"/>
+                    <canvas id="graph" height="676" width="674"/>
+                    <script type="text/javascript">
+                        const canvas = document.getElementById("graph")
+                        canvas.addEventListener("click", function (event){
+                        const rect = canvas.getBoundingClientRect()
+                        const x = event.clientX - rect.left
+                        const y = event.clientY - rect.top
+                        const r = $(".r-value").val()
+                        if (r != ""){
+                            rc([{name: 'x', value: (x/canvas.clientWidth - 0.5) * 2}, {name: 'y', value: (0.5 - y/canvas.clientHeight) * 2}, {name: "r", value: r}])
+                        }else{
+                            $(".info-text-area").html("Set R!")
+                            setTimeout(() => {
+                                    $(".info-text-area").html("")
+                                },
+                                500)
+                        }
+                        })
+                    </script>
                 </div>
             </td>
         </tr>

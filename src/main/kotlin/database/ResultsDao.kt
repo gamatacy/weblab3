@@ -1,6 +1,6 @@
 package database
 
-import ResultBean
+import beans.ResultBean
 
 class ResultsDao {
     companion object{
@@ -23,7 +23,7 @@ class ResultsDao {
             val session = HibernateSessionFactory.getSessionFactory()?.openSession()
             if (session != null) {
                 session.beginTransaction()
-                val count = session.createQuery("SELECT COUNT(*) FROM ResultBean")
+                val count = session.createQuery("SELECT COUNT(*) FROM beans.ResultBean")
                 println("/// COUNT ///")
                 println(count.resultList.toString())
                 println("/// COUNT ///")
