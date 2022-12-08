@@ -4,13 +4,6 @@ import beans.ResultBean
 
 class ResultsDao {
     companion object{
-        fun getById(id: Int): ResultBean?{
-            val session = HibernateSessionFactory.getSessionFactory()?.openSession()
-            session?.beginTransaction()
-            val resultBean = session?.get(ResultBean::class.java, id)
-            session?.transaction?.commit()
-            return resultBean
-        }
 
         fun add(resultBean: ResultBean){
             val session = HibernateSessionFactory.getSessionFactory()?.openSession()
@@ -19,17 +12,17 @@ class ResultsDao {
             session?.transaction?.commit()
         }
 
-        fun getResults(){
+        fun getResults(): MutableList<Any?> {
             val session = HibernateSessionFactory.getSessionFactory()?.openSession()
             if (session != null) {
                 session.beginTransaction()
-                val count = session.createQuery("SELECT COUNT(*) FROM beans.ResultBean")
-                println("/// COUNT ///")
-                println(count.resultList.toString())
-                println("/// COUNT ///")
+                val query = session.createQuery("from beans.ResultBean")
+                val list = query.list()
                 session.transaction.commit()
                 session.close()
+                return list
             }
+            return mutableListOf()
         }
 
     }

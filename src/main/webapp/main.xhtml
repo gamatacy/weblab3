@@ -3,9 +3,9 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 >
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -15,8 +15,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&#38;display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="styles/style.css"/>
     <script src="js/jquery-3.6.1.js" type="module"/>
-    <script src="js/main.js" type="module"></script>
-    <script src="js/canvas.js" type="module"></script>
+    <script src="js/main.js" type="module"/>
+    <script src="js/canvas.js" type="module"/>
+    <script src="js/clock.js" type="module"/>
     <script type="text/javascript">
         function changeValueY(value) {
             $(".y-value").val(value);
@@ -32,16 +33,23 @@
         }
         function changeValueR(value) {
             $(".r-value").val(value);
+            let canvas = document.getElementById("graph")
+            let ctx = canvas.getContext("2d")
+
             $("a[href^='#']").each(function () {
                if($(this).attr('class') != "bbutton"){
                    if ($(this).text() == value){
                        $(this).removeClass();
                        $(this).toggleClass("r-button-activated");
                    } else{
+                       ctx.clearRect(0, 0, canvas.width, canvas.height);
                        $(this).removeClass();
                        $(this).toggleClass("r-button");
                    }
                }
+
+
+
             })
         }
     </script>
@@ -70,7 +78,7 @@
                       <tr>
                           <td class="coord-name">X</td>
                           <td>
-                              <input type="text" name="x" class="x-text-area"/>
+                              <input type="text" placeholder="                       value from -3 to 5" name="x" class="x-text-area"/>
                           </td>
                       </tr>
                       <tr>
@@ -99,11 +107,13 @@
                               <p:commandLink value="2.5" type="button" onclick="changeValueR(2.5)" class="r-button"/>
                               <p:commandLink value="3" type="button" onclick="changeValueR(3)" class="r-button"/>
                               <input type="hidden"  name="r" class="r-value" value=""/>
+                              <input type="hidden" name="offset" class="hidden-time-cell" value=""/>
                           </td>
                       </tr>
+
                   </table>
-                  <h:commandButton class="check-button" value="check">
-                      <f:ajax execute="@form" listener="#{coordinates.applyHit()}"/>
+                  <h:commandButton class="check-button" value="check" >
+                      <f:ajax execute="@form" listener="#{resultBean.applyHit()}" render="results"/>
                   </h:commandButton>
                   <div>
                       <h3 class="info-text-area">
@@ -114,17 +124,18 @@
             </td>
             <td class="coord-area-cell" colspan="2">
                 <div>
-                    <p:remoteCommand name="rc" action="#{canvasBean.applyHit()}"/>
+                    <p:remoteCommand name="rc" action="#{resultBean.applyHit()}" update="results"/>
                     <canvas id="graph" height="676" width="674"/>
                     <script type="text/javascript">
                         const canvas = document.getElementById("graph")
                         canvas.addEventListener("click", function (event){
                         const rect = canvas.getBoundingClientRect()
-                        const x = event.clientX - rect.left
-                        const y = event.clientY - rect.top
                         const r = $(".r-value").val()
+                        const x = getCoordinate(event.offsetX, "x", r)
+                        const y = getCoordinate(event.offsetY, "y", r)
+                        const time = Intl.DateTimeFormat().resolvedOptions().timeZone;
                         if (r != ""){
-                            rc([{name: 'x', value: (x/canvas.clientWidth - 0.5) * 2}, {name: 'y', value: (0.5 - y/canvas.clientHeight) * 2}, {name: "r", value: r}])
+                            rc([{name: 'x', value: x}, {name: 'y', value: y}, {name: "r", value: r}, {name: "offset", value: time}])
                         }else{
                             $(".info-text-area").html("Set R!")
                             setTimeout(() => {
@@ -133,22 +144,40 @@
                                 500)
                         }
                         })
+                        function getCoordinate(coordinate, coordinate_name, r) {
+                            let segment = 154 / r
+                            if (coordinate_name == "x") {
+                                return (coordinate - 330) / segment
+                            } else {
+                                return (340 - coordinate) / segment
+                            }
+                        }
                     </script>
                 </div>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <table id="results-table">
-                    <tr class="result-row">
-                        <th class="result-cell">result</th>
-                        <th class="result-cell">X</th>
-                        <th class="result-cell">Y</th>
-                        <th class="result-cell">R</th>
-                        <th class="result-cell">time</th>
-                        <th class="result-cell">execution time</th>
-                    </tr>
-                </table>
+                <p:dataTable value="#{resultBean.getHits()}" var="element" id="results">
+                        <p:column headerText="result" class="result-cell">
+                            <h:outputText value="#{element.result}"/>
+                        </p:column>
+                        <p:column headerText="X" class="result-cell">
+                            <h:outputText value="#{fn:substring(element.x, 0, 4)}"/>
+                        </p:column>
+                        <p:column headerText="Y" class="result-cell">
+                            <h:outputText value="#{fn:substring(element.y, 0, 4)}"/>
+                        </p:column>
+                        <p:column headerText="R" class="result-cell">
+                            <h:outputText value="#{element.r}"/>
+                        </p:column>
+                        <p:column headerText="time" class="result-cell">
+                            <h:outputText value="#{element.getFormattedTime()}"/>
+                        </p:column>
+                        <p:column headerText="execution time" class="result-cell">
+                            <h:outputText value="#{element.execTime}ms"/>
+                        </p:column>
+                </p:dataTable>
             </td>
         </tr>
     </table>
