@@ -5,7 +5,7 @@ $(document).ready(function () {
             let y = $(".y-value").val();
             let r = $(".r-value").val();
 
-            if (!(3 <= x <= 5)) {
+            if (parseFloat(x) <= -3 || parseFloat(x) >= 5 || x == "") {
                 changeCheckButtonText("Wrong X")
                 return false
             }
@@ -30,6 +30,6 @@ $(document).ready(function () {
         setTimeout(() => {
                 $(".info-text-area").html("")
             },
-            500)
+            1000)
     }
 })

@@ -58,8 +58,6 @@ function drawHits(){
             let result = table.rows[i].cells[0].innerText
             let x = table.rows[i].cells[1].innerText
             let y = table.rows[i].cells[2].innerText
-            const x1 = (x/r*canvas.width/2+canvas.width/2)
-            const y1 = canvas.height-(y/r*canvas.height/2+canvas.height/2)
             drawHit(result,x * (154 / r) + 330, Math.abs(y * (154 /r) - 340), ctx)
         }
     }

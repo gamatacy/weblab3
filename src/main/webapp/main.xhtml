@@ -53,15 +53,6 @@
             })
         }
     </script>
-    <script type="text/javascript">
-
-        function drawHit(x, y, ctx) {
-            ctx.beginPath()
-            ctx.arc(x, y, 3, 0, Math.PI * 2)
-            ctx.fill()
-        }
-
-    </script>
 </head>
 <h:head/>
 <h:body>
@@ -78,7 +69,7 @@
                       <tr>
                           <td class="coord-name">X</td>
                           <td>
-                              <input type="text" placeholder="                       value from -3 to 5" name="x" class="x-text-area"/>
+                              <input type="text" placeholder="                      value from -3 to 5" name="x" class="x-text-area"/>
                           </td>
                       </tr>
                       <tr>
@@ -113,7 +104,7 @@
 
                   </table>
                   <h:commandButton class="check-button" value="check" >
-                      <f:ajax execute="@form" listener="#{resultBean.applyHit()}" render="results"/>
+                      <f:ajax execute="@form" listener="#{hitBean.applyHit()}" render="results"/>
                   </h:commandButton>
                   <div>
                       <h3 class="info-text-area">
@@ -124,15 +115,16 @@
             </td>
             <td class="coord-area-cell" colspan="2">
                 <div>
-                    <p:remoteCommand name="rc" action="#{resultBean.applyHit()}" update="results"/>
+                    <p:remoteCommand name="rc" action="#{hitBean.applyHit()}" update="results"/>
                     <canvas id="graph" height="676" width="674"/>
                     <script type="text/javascript">
                         const canvas = document.getElementById("graph")
                         canvas.addEventListener("click", function (event){
-                        const rect = canvas.getBoundingClientRect()
                         const r = $(".r-value").val()
                         const x = getCoordinate(event.offsetX, "x", r)
                         const y = getCoordinate(event.offsetY, "y", r)
+                            console.log(x)
+                            console.log(y)
                         const time = Intl.DateTimeFormat().resolvedOptions().timeZone;
                         if (r != ""){
                             rc([{name: 'x', value: x}, {name: 'y', value: y}, {name: "r", value: r}, {name: "offset", value: time}])
@@ -141,7 +133,7 @@
                             setTimeout(() => {
                                     $(".info-text-area").html("")
                                 },
-                                500)
+                                1000)
                         }
                         })
                         function getCoordinate(coordinate, coordinate_name, r) {
@@ -158,15 +150,15 @@
         </tr>
         <tr>
             <td colspan="2">
-                <p:dataTable value="#{resultBean.getHits()}" var="element" id="results">
+                <p:dataTable value="#{hitBean.getHits()}" var="element" id="results">
                         <p:column headerText="result" class="result-cell">
                             <h:outputText value="#{element.result}"/>
                         </p:column>
                         <p:column headerText="X" class="result-cell">
-                            <h:outputText value="#{fn:substring(element.x, 0, 4)}"/>
+                            <h:outputText value="#{fn:substring(element.x, 0, 7)}"/>
                         </p:column>
                         <p:column headerText="Y" class="result-cell">
-                            <h:outputText value="#{fn:substring(element.y, 0, 4)}"/>
+                            <h:outputText value="#{fn:substring(element.y, 0, 7)}"/>
                         </p:column>
                         <p:column headerText="R" class="result-cell">
                             <h:outputText value="#{element.r}"/>

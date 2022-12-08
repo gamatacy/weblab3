@@ -3,9 +3,9 @@ package database
 import beans.ResultBean
 
 class ResultsDao {
-    companion object{
+    companion object {
 
-        fun add(resultBean: ResultBean){
+        fun add(resultBean: ResultBean) {
             val session = HibernateSessionFactory.getSessionFactory()?.openSession()
             session?.beginTransaction()
             session?.save(resultBean)
